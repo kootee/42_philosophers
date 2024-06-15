@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:16:28 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/14 22:09:12 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/15 14:17:07 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int init_philos(t_meta *meta)
         meta->philos[i].meal_count = 0;
         meta->philos[i].ate_last = 0;
         meta->philos[i].right_fork = NULL;
-        if (pthread_mutex_init(&(meta->philos[i].left_fork), NULL) > 0);
-            
+        if (pthread_mutex_init(&(meta->philos[i].left_fork), NULL) > 0)
+            handle_error(EXIT_FAILURE);
     }
 }
 
