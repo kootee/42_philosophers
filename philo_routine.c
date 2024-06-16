@@ -6,11 +6,16 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/16 15:34:50 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/16 15:43:33 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	grab_fork(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->left_fork)
+}
 
 void    *philo_routine(void *ptr)
 {
