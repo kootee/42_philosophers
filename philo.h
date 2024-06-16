@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/14 22:07:39 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/15 21:14:05 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,21 @@ typedef struct s_meta
 	pthread_mutex_t	m_stop;
 	pthread_mutex_t	m_eat;
 	pthread_mutex_t	dead;
-	t_philo	*philos;
+	t_philo	*philo;
 }	t_meta;
 
 /* Init functions */
-int    init_meta(t_meta *meta, char **argv);
+int	init_meta(t_meta *meta, char **argv);
+int init_philos(t_meta *meta, int num_of_philos);
+
+/* Philo life */
+void    *routine(void *ptr);
 
 /* Utils */
 bool	valid_args(char **args);
 
 /* Error handling */
 void	handle_error(int errno);
+size_t  get_time(void);
 
 #endif
