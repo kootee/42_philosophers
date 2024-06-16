@@ -6,11 +6,35 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:16:17 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/15 20:36:11 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/16 15:11:24 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	ft_atoi(const char *str)
+{
+	int		i;
+	int		nbr;
+
+	i = 1;
+	nbr = 0;
+	while (('\t' <= *str && *str <= '\r') || *str == ' ')
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			i *= -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		nbr *= 10;
+		nbr += *str - 48;
+		str++;
+	}
+	return (nbr * i);
+}
 
 bool    valid_args(char **args)
 {

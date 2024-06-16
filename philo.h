@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/15 21:14:05 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/16 15:12:25 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ typedef enum s_errorcode
 
 typedef	struct s_philo
 {
+	pthread_t	thread;
 	int			num;
 	bool		eating;
-	pthread_t	thread;
 	long int	ate_last;
-	int	meal_count;
+	int			meal_count;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	left_fork;
 }	t_philo;
@@ -47,19 +47,19 @@ typedef	struct s_philo
 
 typedef struct s_meta
 {
-	bool	eats;
-	int	philos_num;
-	int	n_eat;
-	int	t_die;
-	int	t_eat;
-	int	t_sleep;
+	bool		eats;
+	int			philos_num;
+	int			n_eat;
+	int			t_die;
+	int			t_eat;
+	int			t_sleep;
 	long int	start_time;
-	bool	stop;
+	bool		stop;
+	t_philo	*philo;
 	pthread_mutex_t	print;
 	pthread_mutex_t	m_stop;
 	pthread_mutex_t	m_eat;
 	pthread_mutex_t	dead;
-	t_philo	*philo;
 }	t_meta;
 
 /* Init functions */
@@ -67,10 +67,11 @@ int	init_meta(t_meta *meta, char **argv);
 int init_philos(t_meta *meta, int num_of_philos);
 
 /* Philo life */
-void    *routine(void *ptr);
+void    *philo_routine(void *ptr);
 
 /* Utils */
 bool	valid_args(char **args);
+int		ft_atoi(const char *str);
 
 /* Error handling */
 void	handle_error(int errno);

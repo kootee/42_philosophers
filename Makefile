@@ -8,7 +8,11 @@ debug ?= 0
 
 HEADERS	= -I ./include
 
-SRCS	= 	philo.c
+SRCS	= 	main.c \
+			error_handling.c \
+			philo_init.c \
+			philo_routine.c \
+			philo_utils.c 
 
 OBJS	= ${SRCS:.c=.o}
 
