@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:49:01 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/14 11:18:16 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/16 09:21:16 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void    main(int argc, char **argv)
         handle_error(EXIT_INVALID_ARGS);
     if (init_meta(&meta, argv) > 0)
     {
-        // free everything
+        // free
         handle_error(EXIT_INIT_ERROR);
     }
-    init_philo(&meta);
-    // free everything at the end
+    init_philo(&meta, meta.philos_num);
+    // free
 }
