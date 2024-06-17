@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:16:28 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/17 11:01:26 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:22:14 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 static int create_threads(t_meta *meta, int num_of_philos)
 {
-    // pthread_t   monitor;
     int i;
     
     i = 0;
-/*  if (pthread_create(&monitor, NULL, &monitor, meta->philo) != 0)
-        handle_error(EXIT_FAILURE); */
     while (i < num_of_philos)
     {
         if (pthread_create(&meta->philo[i].thread, NULL, \
@@ -67,7 +64,7 @@ int    init_meta(t_meta *meta, char **argv)
     pthread_mutex_init(&meta->m_eat, NULL);
     pthread_mutex_init(&meta->m_stop, NULL);
     pthread_mutex_init(&meta->dead, NULL);
-    meta->philos_num = ft_atoi(argv[1]); // change to ft
+    meta->philos_num = ft_atoi(argv[1]);
     meta->t_die = ft_atoi(argv[2]);
     meta->t_eat = ft_atoi(argv[3]);
     meta->t_sleep = ft_atoi(argv[4]);

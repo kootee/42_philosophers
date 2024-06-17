@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/17 11:26:21 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:56:51 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	*monitor_philo(void *ptr)
 
 void	eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->meta->m_eat);
 	pthread_mutex_lock(&philo->left_fork);
 	printf("Philosopher %d is has picked up the left fork", philo->num);
 	if (philo->meta->philos_num == 1)
@@ -35,16 +34,21 @@ void	eat(t_philo *philo)
 		ft_usleep(philo->meta->t_die);
 		return ;
 	}
+	
 	pthread_mutex_lock(philo->right_fork);
 	printf("Philosopher %d is has picked up the right fork", philo->num);
+	
+	pthread_mutex_lock(&philo->meta->m_eat);
 	philo->ate_last = get_time();
 	philo->meal_count++;
 	pthread_mutex_unlock(&philo->meta->m_eat);
+	
 	ft_usleep(philo->meta->t_eat);
-	pthread_mutex_unlock(&philo->left_fork);
-	printf("Philosopher %d is has put down the left fork", philo->num);
+	
 	pthread_mutex_unlock(philo->right_fork);
 	printf("Philosopher %d is has put down the right fork", philo->num);
+	pthread_mutex_unlock(&philo->left_fork);
+	printf("Philosopher %d is has put down the left fork", philo->num);
 }
 
 void    *philo_routine(void *ptr)
