@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/16 15:12:25 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/17 10:46:42 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ typedef	struct s_philo
 {
 	pthread_t	thread;
 	int			num;
-	bool		eating;
-	long int	ate_last;
+	int			eating;
 	int			meal_count;
+	long int	ate_last;
+	int			*alive;
+	t_meta		*meta; // includes time to die eat and sleep
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	left_fork;
 }	t_philo;
@@ -49,17 +51,17 @@ typedef struct s_meta
 {
 	bool		eats;
 	int			philos_num;
-	int			n_eat;
-	int			t_die;
-	int			t_eat;
-	int			t_sleep;
+	unsigned int			times_to_eat;
+	unsigned int			t_die;
+	unsigned int			t_eat;
+	unsigned int			t_sleep;
 	long int	start_time;
-	bool		stop;
+	int		stop;
 	t_philo	*philo;
-	pthread_mutex_t	print;
-	pthread_mutex_t	m_stop;
-	pthread_mutex_t	m_eat;
+	pthread_mutex_t	write;
 	pthread_mutex_t	dead;
+	pthread_mutex_t	m_eat;
+	pthread_mutex_t	m_stop; // necessary?
 }	t_meta;
 
 /* Init functions */

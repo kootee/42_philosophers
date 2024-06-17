@@ -1,9 +1,9 @@
-NAME = philo
-CC = cc
-BUILD_DIR = build
-BIN_DIR = bin
-CFLAGS = -Wextra -Wall -Werror -Wunreachable-code -Ofast -pthread
-DEBUG_FLAGS = -g -fsanitize=address
+NAME := philo
+CC := cc
+BUILD_DIR := build
+BIN_DIR := bin
+CFLAGS ?= -Wextra -Wall -Werror -Wunreachable-code -Ofast -pthread
+DEBUG_FLAGS ?= -g -fsanitize=address
 debug ?= 0
 
 HEADERS	= -I ./include
@@ -11,7 +11,7 @@ HEADERS	= -I ./include
 SRCS	= 	main.c \
 			error_handling.c \
 			philo_init.c \
-			philo_routine.c \
+			philo_routines.c \
 			philo_utils.c 
 
 OBJS	= ${SRCS:.c=.o}

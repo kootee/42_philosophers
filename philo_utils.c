@@ -6,11 +6,21 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:16:17 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/16 15:11:24 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/17 10:37:54 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	ft_usleep(unsigned int time)
+{
+	unsigned int	start;
+	
+	start = get_time();
+	while (get_time() - start < time)
+		usleep(500);
+	return (0);
+}
 
 int	ft_atoi(const char *str)
 {

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:49:01 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/16 09:21:16 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/17 10:17:18 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ void    main(int argc, char **argv)
         // free
         handle_error(EXIT_INIT_ERROR);
     }
-    init_philo(&meta, meta.philos_num);
+    init_philos(&meta, meta.philos_num);
     // free
 }

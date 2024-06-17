@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   philo_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:16:28 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/16 15:11:46 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:01:26 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 static int create_threads(t_meta *meta, int num_of_philos)
 {
+    // pthread_t   monitor;
     int i;
     
     i = 0;
+/*  if (pthread_create(&monitor, NULL, &monitor, meta->philo) != 0)
+        handle_error(EXIT_FAILURE); */
     while (i < num_of_philos)
     {
-        if(pthread_create(&meta->philo[i].thread, NULL, \
+        if (pthread_create(&meta->philo[i].thread, NULL, \
         &philo_routine, &meta->philo[i]) != 0)
             return (EXIT_FAILURE);
         i++;
@@ -60,7 +63,7 @@ int init_philos(t_meta *meta, int num_of_philos)
 
 int    init_meta(t_meta *meta, char **argv)
 {
-    pthread_mutex_init(&meta->print, NULL);
+    pthread_mutex_init(&meta->write, NULL);
     pthread_mutex_init(&meta->m_eat, NULL);
     pthread_mutex_init(&meta->m_stop, NULL);
     pthread_mutex_init(&meta->dead, NULL);
@@ -70,8 +73,8 @@ int    init_meta(t_meta *meta, char **argv)
     meta->t_sleep = ft_atoi(argv[4]);
     if (argv[5])
     {
-        meta->n_eat = ft_atoi(argv[5]);
-        if (meta->n_eat == 0)
+        meta->times_to_eat = ft_atoi(argv[5]);
+        if (meta->times_to_eat == 0)
             return (1);
     }
     meta->philo = malloc(sizeof(t_philo) * meta->philos_num);
