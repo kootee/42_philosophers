@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:16:28 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/17 14:22:14 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/18 10:08:52 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,5 @@ int    init_meta(t_meta *meta, char **argv)
     if (meta->philo == NULL)
         return (EXIT_MALLOC_FAIL);
     meta->stop = false;
-    meta->eats = false;
+    meta->full_philos = false;
 }

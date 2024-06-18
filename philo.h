@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/17 10:46:42 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/18 10:08:52 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef	struct s_philo
 
 typedef struct s_meta
 {
-	bool		eats;
+	int			full_philos;
 	int			philos_num;
 	unsigned int			times_to_eat;
 	unsigned int			t_die;
@@ -58,8 +58,8 @@ typedef struct s_meta
 	long int	start_time;
 	int		stop;
 	t_philo	*philo;
-	pthread_mutex_t	write;
-	pthread_mutex_t	dead;
+	pthread_mutex_t	m_write;
+	pthread_mutex_t	m_dead;
 	pthread_mutex_t	m_eat;
 	pthread_mutex_t	m_stop; // necessary?
 }	t_meta;
@@ -72,8 +72,9 @@ int init_philos(t_meta *meta, int num_of_philos);
 void    *philo_routine(void *ptr);
 
 /* Utils */
-bool	valid_args(char **args);
+int	valid_args(char **args);
 int		ft_atoi(const char *str);
+int	ft_usleep(unsigned int time);
 
 /* Error handling */
 void	handle_error(int errno);

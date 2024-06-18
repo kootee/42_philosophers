@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:16:17 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/17 10:37:54 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/18 09:24:29 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_atoi(const char *str)
 	return (nbr * i);
 }
 
-bool    valid_args(char **args)
+int    valid_args(char **args)
 {
     if (0)
         return (true);
