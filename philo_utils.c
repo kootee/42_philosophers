@@ -6,11 +6,35 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:16:17 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/18 09:24:29 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/18 11:06:28 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int is_alive(t_philo *philo)
+{
+    pthread_mutex_lock(&philo->meta->m_dead);
+    if (philo->alive == 1)
+    {
+        pthread_mutex_unlock(&philo->meta->m_dead);
+        return (1);
+    }
+    pthread_mutex_unlock(&philo->meta->m_dead);
+    return (0);
+}
+
+void    print_message(const char *message, t_philo *philo)
+{
+    size_t current_time;
+
+    if (!is_alive(philo))
+        return ;
+    current_time = get_time() - philo->meta->start_time;
+    pthread_mutex_lock(&philo->meta->m_print);
+    printf("%zu: Philosopher %d %s\n", current_time, philo->num, message);
+    pthread_mutex_unlock(&philo->meta->m_print);
+}
 
 int	ft_usleep(unsigned int time)
 {

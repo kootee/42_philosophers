@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/18 10:08:52 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/18 11:05:34 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef	struct s_philo
 	int			eating;
 	int			meal_count;
 	long int	ate_last;
-	int			*alive;
+	int			alive;
 	t_meta		*meta; // includes time to die eat and sleep
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	left_fork;
@@ -58,10 +58,10 @@ typedef struct s_meta
 	long int	start_time;
 	int		stop;
 	t_philo	*philo;
-	pthread_mutex_t	m_write;
+	pthread_mutex_t	m_print; // necessary?
 	pthread_mutex_t	m_dead;
 	pthread_mutex_t	m_eat;
-	pthread_mutex_t	m_stop; // necessary?
+	pthread_mutex_t	m_stop; 
 }	t_meta;
 
 /* Init functions */

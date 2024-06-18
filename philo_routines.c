@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/18 10:40:18 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/18 11:07:51 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	*monitor_life(void *ptr)
 		pthread_mutex_unlock(&philo->meta->m_stop);
 		printf("Philosopher %d died", philo->num);
 		pthread_mutex_lock(&philo->meta->m_dead);
+		philo->alive = 0;
 		philo->meta->stop = 1;
 		pthread_mutex_unlock(&philo->meta->m_dead);
 		return ;
@@ -60,6 +61,13 @@ void	eat(t_philo *philo)
 	printf("Philosopher %d is has put down the left fork", philo->num);
 }
 
+static void	philo_sleep_think(t_philo *philo)
+{
+	printf("Philosopher %d is sleeping", philo->num);
+	ft_usleep(philo->meta->t_sleep);
+	printf("Philosopher %d is thinking", philo->num);
+}
+
 void    *philo_routine(void *ptr)
 {
 	t_philo		*philo;
@@ -70,11 +78,8 @@ void    *philo_routine(void *ptr)
 		ft_usleep(10);
     while (is_alive(philo))
 	{
-		pthread_create(&monitor_life, NULL, monitor_life, ptr); // thread id, args, function to be executed, args passed to function
+		pthread_create(&monitor_life, NULL, monitor_life, ptr);
 		eat(philo);
-		printf("Philosopher %d is sleeping", philo->num);
-		ft_usleep(philo->meta->t_sleep);
-		printf("Philosopher %d is thinking", philo->num);
 		phtread_detach(monitor_life);
 		if (philo->meal_count == philo->meta->times_to_eat)
 		{

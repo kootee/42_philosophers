@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:16:28 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/18 10:08:52 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/18 11:07:26 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int init_philos(t_meta *meta, int num_of_philos)
     meta->start_time = get_time();
     while (i < num_of_philos)
     {
+        meta->philo[i].alive = 1;
         meta->philo[i].num = i + 1;
         meta->philo[i].meal_count = 0;
         meta->philo[i].ate_last = 0;
@@ -60,10 +61,10 @@ int init_philos(t_meta *meta, int num_of_philos)
 
 int    init_meta(t_meta *meta, char **argv)
 {
-    pthread_mutex_init(&meta->write, NULL);
+    pthread_mutex_init(&meta->m_print, NULL);
     pthread_mutex_init(&meta->m_eat, NULL);
     pthread_mutex_init(&meta->m_stop, NULL);
-    pthread_mutex_init(&meta->dead, NULL);
+    pthread_mutex_init(&meta->m_dead, NULL);
     meta->philos_num = ft_atoi(argv[1]);
     meta->t_die = ft_atoi(argv[2]);
     meta->t_eat = ft_atoi(argv[3]);
