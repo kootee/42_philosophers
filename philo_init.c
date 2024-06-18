@@ -6,11 +6,31 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:16:28 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/18 11:07:26 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:33:22 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int    valid_args(char **args)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (args[i])
+    {    
+        j = 0;
+        while (args[i][j])
+        {
+            if (args[i][j] < '0' && args[i][j] > '9')
+                return (EXIT_FAILURE);
+            j++;
+        }
+        i++;
+    }
+    return (0);
+}
 
 static int create_threads(t_meta *meta, int num_of_philos)
 {
@@ -47,7 +67,7 @@ int init_philos(t_meta *meta, int num_of_philos)
         meta->philo[i].meal_count = 0;
         meta->philo[i].ate_last = 0;
         meta->philo[i].right_fork = NULL;
-        if (pthread_mutex_init(&meta->philo[i].left_fork, NULL) != 0);
+        if (pthread_mutex_init(&meta->philo[i].left_fork, NULL) != 0)
             return(EXIT_FAILURE);
         if (i == num_of_philos - 1)
             meta->philo[i].right_fork = &meta->philo[0].left_fork;
@@ -80,4 +100,5 @@ int    init_meta(t_meta *meta, char **argv)
         return (EXIT_MALLOC_FAIL);
     meta->stop = false;
     meta->full_philos = false;
+    return (0);
 }

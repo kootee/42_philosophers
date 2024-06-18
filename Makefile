@@ -4,7 +4,7 @@ BUILD_DIR := build
 BIN_DIR := bin
 CFLAGS ?= -Wextra -Wall -Werror -Wunreachable-code -Ofast -pthread
 DEBUG_FLAGS ?= -g -fsanitize=address
-debug ?= 0
+debug ?= 1
 
 HEADERS	= -I ./include
 

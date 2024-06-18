@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/18 11:07:51 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:33:01 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ void	*monitor_life(void *ptr)
 		philo->alive = 0;
 		philo->meta->stop = 1;
 		pthread_mutex_unlock(&philo->meta->m_dead);
-		return ;
+		return (NULL);
 	}
 	pthread_mutex_unlock(&philo->meta->m_eat);
 	pthread_mutex_unlock(&philo->meta->m_stop);
+	return (NULL);
 }
 
 void	eat(t_philo *philo)
@@ -71,16 +72,17 @@ static void	philo_sleep_think(t_philo *philo)
 void    *philo_routine(void *ptr)
 {
 	t_philo		*philo;
-	pthread_t	monitor_life;
+	pthread_t	monitor_thread;
 	
 	philo = (t_philo *)ptr;
 	if (philo->meta->philos_num % 2 == 0)
 		ft_usleep(10);
     while (is_alive(philo))
 	{
-		pthread_create(&monitor_life, NULL, monitor_life, ptr);
+		pthread_create(&monitor_thread, NULL, monitor_life, ptr);
 		eat(philo);
-		phtread_detach(monitor_life);
+		philo_sleep_think(philo);
+		pthread_detach(monitor_thread);
 		if (philo->meal_count == philo->meta->times_to_eat)
 		{
 			pthread_mutex_lock(&philo->meta->m_stop);
@@ -91,10 +93,10 @@ void    *philo_routine(void *ptr)
 				pthread_mutex_lock(&philo->meta->m_dead);
 				philo->meta->stop = 1;
 				pthread_mutex_unlock(&philo->meta->m_dead);
-				return ;
+				return (NULL);
 			}
 			pthread_mutex_unlock(&philo->meta->m_stop);
-			return ;
 		}
 	}
+	return (NULL);
 }

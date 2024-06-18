@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/18 11:05:34 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:44:54 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,23 @@ typedef	struct s_philo
 	int			meal_count;
 	long int	ate_last;
 	int			alive;
-	t_meta		*meta; // includes time to die eat and sleep
+	struct s_meta		*meta; // includes time to die eat and sleep
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	left_fork;
 }	t_philo;
-
 
 typedef struct s_meta
 {
 	int			full_philos;
 	int			philos_num;
-	unsigned int			times_to_eat;
-	unsigned int			t_die;
-	unsigned int			t_eat;
-	unsigned int			t_sleep;
+	int			times_to_eat;
+	int			t_die;
+	int			t_eat;
+	int			t_sleep;
+	int			stop;
 	long int	start_time;
-	int		stop;
 	t_philo	*philo;
-	pthread_mutex_t	m_print; // necessary?
+	pthread_mutex_t	m_print;
 	pthread_mutex_t	m_dead;
 	pthread_mutex_t	m_eat;
 	pthread_mutex_t	m_stop; 
@@ -67,13 +66,14 @@ typedef struct s_meta
 /* Init functions */
 int	init_meta(t_meta *meta, char **argv);
 int init_philos(t_meta *meta, int num_of_philos);
+int	valid_args(char **args);
 
-/* Philo life */
+/* Philo routines */
 void    *philo_routine(void *ptr);
+int		is_alive(t_philo *philo);
 
 /* Utils */
-int	valid_args(char **args);
-int		ft_atoi(const char *str);
+int	ft_atoi(const char *str);
 int	ft_usleep(unsigned int time);
 
 /* Error handling */
