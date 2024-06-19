@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:16:28 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/19 11:01:45 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/19 11:20:14 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,34 +54,36 @@ static int create_threads(t_meta *meta, int num_of_philos)
     return (0);
 }
 
-int init_philos(t_meta *meta, int num_of_philos)
+int init_philos(t_meta *meta, int philos_num)
 {
     int i;
 
     i = 0;
-    meta->start_time = get_time();
-    while (i < num_of_philos)
+    while (i < philos_num)
     {
         meta->philo[i].num = i + 1;
         meta->philo[i].alive = 1;
         meta->philo[i].eating = 0;
         meta->philo[i].meal_count = 0;
         meta->philo[i].ate_last = 0;
-        meta->philo[i].right_fork = NULL;
+        // meta->philo[i].right_fork = NULL;
         meta->philo[i].meta = meta;
         if (pthread_mutex_init(&meta->philo[i].left_fork, NULL) != 0)
             return(EXIT_FAILURE); // exiting here -> free the malloced philos
         if (pthread_mutex_init(&meta->philo[i].m_eat, NULL) != 0)
             return(EXIT_FAILURE); // exiting here -> free the malloced philos
-        if (i == num_of_philos - 1)
-            meta->philo[i].right_fork = &meta->philo[0].left_fork;
-        else
-            meta->philo[i].right_fork = &meta->philo[i + 1].left_fork;
+        if (pthread_mutex_init(&meta->philo[i].m_dead, NULL) != 0)
+            return(EXIT_FAILURE); // exiting here -> free the malloced philos
+        meta->philo[i].right_fork = &meta->philo[(i + 1) % philos_num].left_fork;
         i++;
     }
-    create_threads(meta, num_of_philos);
+    create_threads(meta, philos_num);
     return (0);
 }
+/*      if (i == philos_num - 1)
+            meta->philo[i].right_fork = &meta->philo[0].left_fork;
+        else
+            meta->philo[i].right_fork = &meta->philo[i + 1].left_fork; */
 
 int    init_meta(t_meta *meta, char **argv)
 {
@@ -91,6 +93,7 @@ int    init_meta(t_meta *meta, char **argv)
         if (meta->times_to_eat == 0)
             return (EXIT_FAILURE);
     }
+    meta->start_time = get_time();
     meta->times_to_eat = 0;
     meta->philos_num = ft_atoi(argv[1]);
     meta->philo = malloc(sizeof(t_philo) * meta->philos_num);
@@ -105,9 +108,7 @@ int    init_meta(t_meta *meta, char **argv)
         return (EXIT_FAILURE);
     if (pthread_mutex_init(&meta->m_stop, NULL) != 0)
         return (EXIT_FAILURE);
-    if (pthread_mutex_init(&meta->m_dead, NULL) != 0)
-        return (EXIT_FAILURE);
-    if (pthread_mutex_init(&meta->m_meal_count, NULL) != 0)
+    if (pthread_mutex_init(&meta->m_full_philos, NULL) != 0)
         return (EXIT_FAILURE);
     return (0);
 }

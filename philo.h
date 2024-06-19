@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/19 11:01:03 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/19 11:28:50 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <sys/time.h>    // For gettimeofday
 #include <pthread.h>     // For pthread functions
 #include <sys/time.h>	// For time functions
+#include <stdbool.h>	// For bool vals
 
 # define TAKES_FORK	"has taken a fork"
 # define EATING		"is eating"
@@ -41,31 +42,31 @@ typedef enum s_errorcode
 typedef	struct s_philo
 {
 	pthread_t		thread;
+	bool			alive;
+	bool			eating;
 	int				num;
-	int				alive;
-	int				eating;
 	int				meal_count;
 	long int		ate_last;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	left_fork;
 	pthread_mutex_t	m_eat;
+	pthread_mutex_t	m_dead;
 	struct s_meta	*meta; // includes time to die eat and sleep
 }	t_philo;
 
 typedef struct s_meta
 {
 	long int		start_time;
+	bool			stop;
 	int				philos_num;
 	int				times_to_eat;
 	int				t_die;
 	int				t_eat;
 	int				t_sleep;
-	int				stop;
 	int				full_philos;
 	pthread_mutex_t	m_print;
-	pthread_mutex_t	m_dead;
 	pthread_mutex_t	m_stop;
-	pthread_mutex_t	m_meal_count;
+	pthread_mutex_t	m_full_philos;
 	t_philo			*philo;
 }	t_meta;
 

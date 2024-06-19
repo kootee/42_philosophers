@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/19 10:59:32 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/19 11:31:08 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	*monitor_life(void *ptr)
 		pthread_mutex_unlock(&philo->m_eat);
 		pthread_mutex_unlock(&philo->meta->m_stop);
 		print_message(DIED, philo);
-		pthread_mutex_lock(&philo->meta->m_dead);
+		pthread_mutex_lock(&philo->m_dead);
 		philo->alive = 0;
 		philo->meta->stop = 1;
-		pthread_mutex_unlock(&philo->meta->m_dead);
+		pthread_mutex_unlock(&philo->m_dead);
 		return (NULL);
 	}
 	pthread_mutex_unlock(&philo->m_eat);
@@ -51,11 +51,11 @@ void	eat(t_philo *philo)
 	print_message(TAKES_FORK, philo);
 	pthread_mutex_lock(&philo->m_eat);
 	philo->eating = 1;
-	print_message(EATING, philo);
 	philo->ate_last = get_time();
+	print_message(EATING, philo);
 	philo->meal_count++;
-	pthread_mutex_unlock(&philo->m_eat);
 	ft_usleep(philo->meta->t_eat);
+	pthread_mutex_unlock(&philo->m_eat);
 	philo->eating = 0;
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(&philo->left_fork);
@@ -67,21 +67,14 @@ static void	philo_sleep_think(t_philo *philo)
 	ft_usleep(philo->meta->t_sleep);
 	print_message(THINKING, philo);
 }
-static int	check_all_finished_eating(t_philo *philo)
+static void	check_all_finished_eating(t_philo *philo)
 {
-			pthread_mutex_lock(&philo->meta->m_stop);
-			philo->meta->full_philos++;
-			if (philo->meta->full_philos == philo->meta->philos_num) // if all philos are full
-			{
-				pthread_mutex_unlock(&philo->meta->m_stop);
-				pthread_mutex_lock(&philo->meta->m_dead);
-				philo->meta->stop = 1;
-				pthread_mutex_unlock(&philo->meta->m_dead);
-				pthread_detach(monitor_thread);
-				return (NULL);
-			}
-			pthread_mutex_unlock(&philo->meta->m_stop);
-	
+	if (philo->meta->full_philos == philo->meta->philos_num) // if all philos are full
+	{
+		pthread_mutex_lock(&philo->meta->m_stop);
+		philo->meta->stop = 1;
+		pthread_mutex_unlock(&philo->meta->m_stop);
+	}
 }
 
 void    *philo_routine(void *ptr)
@@ -99,7 +92,9 @@ void    *philo_routine(void *ptr)
 		if (philo->meta->times_to_eat != 0 \ 
 			&& philo->meal_count == philo->meta->times_to_eat)
 		{
-			pthread_mutex_lock()
+			pthread_mutex_lock(&philo->meta->m_full_philos);
+			philo->meta->full_philos++;
+			pthread_mutex_unlock(&philo->meta->m_full_philos);
 			check_all_finished_eating(philo); // if yes --> stop is set in meta
 			pthread_detach(monitor_thread);
 			return (NULL);

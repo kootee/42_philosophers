@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:16:17 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/19 10:41:29 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/19 11:30:18 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 int	is_alive(t_philo *philo)
 {
-    pthread_mutex_lock(&philo->meta->m_dead);
-    if (philo->alive == 1 && philo->meta->stop == 0)
-    {
-        pthread_mutex_unlock(&philo->meta->m_dead);
-        return (1);
-    }
-    pthread_mutex_unlock(&philo->meta->m_dead);
+    pthread_mutex_lock(&philo->m_dead);
+	pthread_mutex_lock(&philo->meta->m_stop);
+	if (philo->alive == false && philo->meta->stop == true)
+	{
+		pthread_mutex_unlock(&philo->meta->m_stop);
+        pthread_mutex_unlock(&philo->m_dead);
+		return (0);
+	}
+	pthread_mutex_unlock(&philo->meta->m_stop);
+    pthread_mutex_unlock(&philo->m_dead);
     return (0);
 }
 
