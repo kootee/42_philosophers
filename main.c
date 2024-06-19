@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:49:01 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/18 20:12:59 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/19 09:48:41 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void    terminate(t_meta *meta)
     while(i < meta->philos_num)
     {
         pthread_mutex_destroy(&meta->philo[i].left_fork);
-        pthread_mutex_destroy(meta->philo[i].right_fork);
+        // pthread_mutex_destroy(meta->philo[i].right_fork);
     }
     free(meta->philo);
     pthread_mutex_destroy(&meta->m_eat);
@@ -38,10 +38,7 @@ int    main(int argc, char **argv)
     if (!valid_args(argv))
         handle_error(EXIT_INVALID_ARGS);
     if (init_meta(&meta, argv) != 0)
-    {
-        // free
         handle_error(EXIT_INIT_ERROR);
-    }
     init_philos(&meta, meta.philos_num);
     terminate(&meta);
 }

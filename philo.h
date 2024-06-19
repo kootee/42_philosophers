@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/18 20:44:54 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/19 09:44:47 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,32 +35,32 @@ typedef enum s_errorcode
 
 typedef	struct s_philo
 {
-	pthread_t	thread;
-	int			num;
-	int			eating;
-	int			meal_count;
-	long int	ate_last;
-	int			alive;
-	struct s_meta		*meta; // includes time to die eat and sleep
+	pthread_t		thread;
+	int				num;
+	int				alive;
+	int				eating;
+	int				meal_count;
+	long int		ate_last;
+	struct s_meta	*meta; // includes time to die eat and sleep
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	left_fork;
 }	t_philo;
 
 typedef struct s_meta
 {
-	int			full_philos;
-	int			philos_num;
-	int			times_to_eat;
-	int			t_die;
-	int			t_eat;
-	int			t_sleep;
-	int			stop;
-	long int	start_time;
-	t_philo	*philo;
+	long int		start_time;
+	int				philos_num;
+	int				times_to_eat;
+	int				t_die;
+	int				t_eat;
+	int				t_sleep;
+	int				stop;
+	int				full_philos;
 	pthread_mutex_t	m_print;
 	pthread_mutex_t	m_dead;
 	pthread_mutex_t	m_eat;
 	pthread_mutex_t	m_stop; 
+	t_philo			*philo;
 }	t_meta;
 
 /* Init functions */

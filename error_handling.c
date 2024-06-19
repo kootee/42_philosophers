@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:51:47 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/15 20:35:29 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/19 09:05:54 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void    handle_error(int errno)
     }
     else if (errno == EXIT_INIT_ERROR)
     {
-        write(2, "Init error", 11);
+        write(2, "Error initialising", 19);
         exit(errno);
     }
 }
