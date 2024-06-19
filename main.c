@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:49:01 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/19 09:48:41 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/19 10:24:28 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ static void    terminate(t_meta *meta)
     while(i < meta->philos_num)
     {
         pthread_mutex_destroy(&meta->philo[i].left_fork);
-        // pthread_mutex_destroy(meta->philo[i].right_fork);
+        pthread_mutex_destroy(&meta->philo[i].m_eat);
     }
     free(meta->philo);
-    pthread_mutex_destroy(&meta->m_eat);
     pthread_mutex_destroy(&meta->m_stop);
     pthread_mutex_destroy(&meta->m_dead);
     pthread_mutex_destroy(&meta->m_print);

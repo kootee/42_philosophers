@@ -6,16 +6,16 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:16:17 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/18 20:36:58 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/19 10:41:29 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int is_alive(t_philo *philo)
+int	is_alive(t_philo *philo)
 {
     pthread_mutex_lock(&philo->meta->m_dead);
-    if (philo->alive == 1)
+    if (philo->alive == 1 && philo->meta->stop == 0)
     {
         pthread_mutex_unlock(&philo->meta->m_dead);
         return (1);
@@ -24,7 +24,7 @@ int is_alive(t_philo *philo)
     return (0);
 }
 
-void    print_message(const char *message, t_philo *philo)
+void	print_message(const char *message, t_philo *philo)
 {
     size_t current_time;
 
@@ -70,7 +70,7 @@ int	ft_atoi(const char *str)
 	return (nbr * i);
 }
 
-size_t  get_time(void)
+long int  get_time(void)
 {
     struct timeval   time;
     
