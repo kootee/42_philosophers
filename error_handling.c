@@ -16,12 +16,17 @@ void    handle_error(int errno)
 {
     if (errno == EXIT_CMD_COUNT_ERROR)
     {
-        write(2, "Invalid amount of arguments", 28);
+        (void)!write(2, "Invalid amount of arguments", 28);
         exit(errno);
     }
     else if (errno == EXIT_INIT_ERROR)
     {
-        write(2, "Error initialising", 19);
+        (void)!write(2, "Error initialising", 19);
+        exit(errno);
+    }
+    else
+    {
+        (void)!write(2, "Philosophers: error", 20);
         exit(errno);
     }
 }

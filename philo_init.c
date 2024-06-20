@@ -18,6 +18,16 @@ int    valid_args(char **args)
     int j;
 
     i = 0;
+
+    /* test */
+    while (args[i])
+    {
+        printf("arg %d is %s", i, args[i]);
+        i++;
+    }
+    i = 0;
+    /* test */
+    
     while (args[i])
     {    
         j = 0;
