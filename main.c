@@ -21,10 +21,10 @@ static void    terminate(t_meta *meta)
     {
         pthread_mutex_destroy(&meta->philo[i].left_fork);
         pthread_mutex_destroy(&meta->philo[i].m_eat);
+        pthread_mutex_destroy(&meta->philo[i].m_dead);
     }
     free(meta->philo);
     pthread_mutex_destroy(&meta->m_stop);
-    pthread_mutex_destroy(&meta->m_dead);
     pthread_mutex_destroy(&meta->m_print);
 }
 

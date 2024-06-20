@@ -62,8 +62,8 @@ int init_philos(t_meta *meta, int philos_num)
     while (i < philos_num)
     {
         meta->philo[i].num = i + 1;
-        meta->philo[i].alive = 1;
-        meta->philo[i].eating = 0;
+        meta->philo[i].alive = true;
+        meta->philo[i].eating = false;
         meta->philo[i].meal_count = 0;
         meta->philo[i].ate_last = 0;
         // meta->philo[i].right_fork = NULL;
@@ -80,30 +80,26 @@ int init_philos(t_meta *meta, int philos_num)
     create_threads(meta, philos_num);
     return (0);
 }
-/*      if (i == philos_num - 1)
-            meta->philo[i].right_fork = &meta->philo[0].left_fork;
-        else
-            meta->philo[i].right_fork = &meta->philo[i + 1].left_fork; */
 
 int    init_meta(t_meta *meta, char **argv)
 {
+    meta->stop = false;
+    meta->start_time = get_time();
+    meta->full_philos = 0;
+    meta->times_to_eat = 0;
+    meta->philos_num = ft_atoi(argv[1]);
+    meta->t_die = ft_atoi(argv[2]);
+    meta->t_eat = ft_atoi(argv[3]);
+    meta->t_sleep = ft_atoi(argv[4]);
     if (argv[5])
     {
         meta->times_to_eat = ft_atoi(argv[5]);
         if (meta->times_to_eat == 0)
             return (EXIT_FAILURE);
     }
-    meta->start_time = get_time();
-    meta->times_to_eat = 0;
-    meta->philos_num = ft_atoi(argv[1]);
     meta->philo = malloc(sizeof(t_philo) * meta->philos_num);
     if (meta->philo == NULL)
         return (EXIT_FAILURE);
-    meta->stop = 0;
-    meta->full_philos = 0;
-    meta->t_die = ft_atoi(argv[2]);
-    meta->t_eat = ft_atoi(argv[3]);
-    meta->t_sleep = ft_atoi(argv[4]);
     if (pthread_mutex_init(&meta->m_print, NULL) != 0)
         return (EXIT_FAILURE);
     if (pthread_mutex_init(&meta->m_stop, NULL) != 0)

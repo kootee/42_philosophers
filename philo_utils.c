@@ -16,7 +16,7 @@ int	is_alive(t_philo *philo)
 {
     pthread_mutex_lock(&philo->m_dead);
 	pthread_mutex_lock(&philo->meta->m_stop);
-	if (philo->alive == false && philo->meta->stop == true)
+	if (philo->alive == false || philo->meta->stop == true)
 	{
 		pthread_mutex_unlock(&philo->meta->m_stop);
         pthread_mutex_unlock(&philo->m_dead);
@@ -24,7 +24,7 @@ int	is_alive(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->meta->m_stop);
     pthread_mutex_unlock(&philo->m_dead);
-    return (0);
+    return (1);
 }
 
 void	print_message(const char *message, t_philo *philo)

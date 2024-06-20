@@ -12,29 +12,33 @@
 
 #include "philo.h"
 
-void	*monitor_life(void *ptr)
+/* Keep checking if the philo is alive, meaning it's not currently eating
+	and the time to die hasn't passed since the last meal */
+
+void	*monitor(void *ptr)
 {
-	/* needs to be loop */
 	t_philo *philo;
 
 	philo = (t_philo *)ptr;
-	ft_usleep(philo->meta->t_die + 1);
-	pthread_mutex_lock(&philo->m_eat);
-	pthread_mutex_lock(&philo->meta->m_stop);
-	if (philo->eating == 0 && is_alive(philo) && \
-		(get_time() - philo->ate_last >= (long int)philo->meta->t_die))
+	while (1)
 	{
+		ft_usleep(philo->meta->t_die + 1);
+		pthread_mutex_lock(&philo->m_eat);
+		if (philo->eating == false && \
+			(get_time() - philo->ate_last >= (long int)philo->meta->t_die))
+		{
+			pthread_mutex_unlock(&philo->m_eat);
+			pthread_mutex_lock(&philo->meta->m_stop);
+			pthread_mutex_lock(&philo->m_dead);
+			philo->alive = false;
+			philo->meta->stop = true;
+			print_message(DIED, philo);
+			pthread_mutex_unlock(&philo->meta->m_stop);
+			pthread_mutex_unlock(&philo->m_dead);
+			break ;
+		}
 		pthread_mutex_unlock(&philo->m_eat);
-		pthread_mutex_unlock(&philo->meta->m_stop);
-		print_message(DIED, philo);
-		pthread_mutex_lock(&philo->m_dead);
-		philo->alive = 0;
-		philo->meta->stop = 1;
-		pthread_mutex_unlock(&philo->m_dead);
-		return (NULL);
 	}
-	pthread_mutex_unlock(&philo->m_eat);
-	pthread_mutex_unlock(&philo->meta->m_stop);
 	return (NULL);
 }
 
@@ -50,15 +54,17 @@ void	eat(t_philo *philo)
 	pthread_mutex_lock(philo->right_fork);
 	print_message(TAKES_FORK, philo);
 	pthread_mutex_lock(&philo->m_eat);
-	philo->eating = 1;
+	philo->eating = true;
 	philo->ate_last = get_time();
-	print_message(EATING, philo);
 	philo->meal_count++;
-	ft_usleep(philo->meta->t_eat);
 	pthread_mutex_unlock(&philo->m_eat);
-	philo->eating = 0;
+	print_message(EATING, philo);
+	ft_usleep(philo->meta->t_eat);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(&philo->left_fork);
+	philo->eating = false;
+
+	printf("Philo %d has eaten %d times now\n", philo->num, philo->meal_count);
 }
 
 static void	philo_sleep_think(t_philo *philo)
@@ -69,10 +75,10 @@ static void	philo_sleep_think(t_philo *philo)
 }
 static void	check_all_finished_eating(t_philo *philo)
 {
-	if (philo->meta->full_philos == philo->meta->philos_num) // if all philos are full
+	if (philo->meta->full_philos == philo->meta->philos_num)
 	{
 		pthread_mutex_lock(&philo->meta->m_stop);
-		philo->meta->stop = 1;
+		philo->meta->stop = true;
 		pthread_mutex_unlock(&philo->meta->m_stop);
 	}
 }
@@ -85,22 +91,21 @@ void    *philo_routine(void *ptr)
 	philo = (t_philo *)ptr;
 	if (philo->meta->philos_num % 2 == 0)
 		ft_usleep(10);
-	pthread_create(&monitor_thread, NULL, monitor_life, ptr);
-    while (is_alive(philo))
+	pthread_create(&monitor_thread, NULL, monitor, ptr);
+	pthread_detach(monitor_thread);
+    while (is_alive(philo)) // while our philo is alive and meta->stop is false
 	{
 		eat(philo);
-		if (philo->meta->times_to_eat != 0 \ 
+		if (philo->meta->times_to_eat != 0 \
 			&& philo->meal_count == philo->meta->times_to_eat)
 		{
 			pthread_mutex_lock(&philo->meta->m_full_philos);
 			philo->meta->full_philos++;
-			pthread_mutex_unlock(&philo->meta->m_full_philos);
 			check_all_finished_eating(philo); // if yes --> stop is set in meta
-			pthread_detach(monitor_thread);
+			pthread_mutex_unlock(&philo->meta->m_full_philos);
 			return (NULL);
 		}
 		philo_sleep_think(philo);
 	}
-	pthread_detach(monitor_thread);
 	return (NULL);
 }
