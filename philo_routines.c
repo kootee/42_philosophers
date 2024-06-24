@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/24 10:35:03 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/24 12:07:18 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /* Keep checking if the philo is alive, meaning it's not currently eating
 	and the time to die hasn't passed since the last meal */
 
-void	*monitor(void *ptr)
+void	*monitor_routine(void *ptr)
 {
 	t_philo *philo;
 
@@ -23,18 +23,15 @@ void	*monitor(void *ptr)
 	while (1)
 	{
 		ft_usleep(philo->meta->t_die + 1);
-		pthread_mutex_lock(&philo->m_eat);
-		if (philo->eating == false && \
-			(get_time() - philo->ate_last >= (long int)philo->meta->t_die))
+		//printf("monitor thread is checking philo %d\n", philo->num);
+		pthread_mutex_lock(&philo->m_eat); // wait if the philo is currently eating
+		if ((get_time() - philo->ate_last >= (long int)philo->meta->t_die))
 		{
 			pthread_mutex_unlock(&philo->m_eat);
 			pthread_mutex_lock(&philo->meta->m_stop);
-			pthread_mutex_lock(&philo->m_dead);
-			philo->alive = false;
 			philo->meta->stop = true;
-			print_message(DIED, philo);
 			pthread_mutex_unlock(&philo->meta->m_stop);
-			pthread_mutex_unlock(&philo->m_dead);
+			print_message(DIED, philo);
 			break ;
 		}
 		pthread_mutex_unlock(&philo->m_eat);
@@ -63,7 +60,6 @@ void	eat(t_philo *philo)
 	pthread_mutex_unlock(philo->r_fork);
 	pthread_mutex_unlock(&philo->l_fork);
 	philo->eating = false;
-
 	printf("Philo %d has eaten %d times now\n", philo->num, philo->meal_count);
 }
 
@@ -91,9 +87,11 @@ void    *philo_routine(void *ptr)
 	philo = (t_philo *)ptr;
 	if (philo->meta->philos_num % 2 == 0)
 		ft_usleep(10);
-	pthread_create(&monitor_thread, NULL, monitor, ptr);
-	pthread_detach(monitor_thread);
-    while (is_alive(philo)) // while our philo is alive and meta->stop is false
+	if (pthread_create(&monitor_thread, NULL, &monitor_routine, philo) != 0)
+        handle_error(EXIT_FAILURE);
+    if (pthread_detach(monitor_thread) != 0)
+        handle_error(EXIT_FAILURE);
+    while (is_alive(philo)) // while meta->stop is false
 	{
 		eat(philo);
 		if (philo->meta->times_to_eat != 0 \

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:16:28 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/24 10:49:30 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/24 12:03:12 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int init_philos(t_meta *meta, int p_num)
         meta->philo[i].eating = false;
         meta->philo[i].meal_count = 0;
         meta->philo[i].r_fork = NULL;
-        meta->philo[i].alive = &meta->stop;
         meta->philo[i].ate_last = meta->start_time;
         if (pthread_mutex_init(&meta->philo[i].l_fork, NULL) != 0)
             return(EXIT_FAILURE); // exiting here -> free the malloced philos

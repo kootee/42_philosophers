@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/24 10:35:03 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/24 12:08:43 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef enum s_errorcode
 typedef	struct s_philo
 {
 	pthread_t		thread;
-	bool			alive;
 	bool			eating;
 	int				num;
 	int				meal_count;
@@ -67,6 +66,7 @@ typedef struct s_meta
 	pthread_mutex_t	m_print;
 	pthread_mutex_t	m_stop;
 	pthread_mutex_t	m_full_philos;
+//	pthread_t		monitor;
 	t_philo			*philo;
 }	t_meta;
 
@@ -77,7 +77,9 @@ int			valid_args(char **args);
 
 /* Philo routines */
 void		*philo_routine(void *ptr);
+void		*monitor_routine(void *ptr);
 int			is_alive(t_philo *philo);
+
 
 /* Utils */
 long int	get_time(void);
