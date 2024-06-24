@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:16:28 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/19 11:20:14 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/24 10:49:30 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int create_threads(t_meta *meta, int num_of_philos)
     while (i < num_of_philos)
     {
         if (pthread_create(&meta->philo[i].thread, NULL, \
-        &philo_routine, &meta->philo[i]) != 0)
+            &philo_routine, &meta->philo[i]) != 0)
             return (EXIT_FAILURE);
         i++;
     }
@@ -54,30 +54,32 @@ static int create_threads(t_meta *meta, int num_of_philos)
     return (0);
 }
 
-int init_philos(t_meta *meta, int philos_num)
+int init_philos(t_meta *meta, int p_num)
 {
     int i;
 
     i = 0;
-    while (i < philos_num)
+    while (i < p_num)
     {
-        meta->philo[i].num = i + 1;
-        meta->philo[i].alive = true;
+        meta->philo[i].num = i;
+        meta->philo[i].meta = meta;
         meta->philo[i].eating = false;
         meta->philo[i].meal_count = 0;
-        meta->philo[i].ate_last = 0;
-        // meta->philo[i].right_fork = NULL;
-        meta->philo[i].meta = meta;
-        if (pthread_mutex_init(&meta->philo[i].left_fork, NULL) != 0)
+        meta->philo[i].r_fork = NULL;
+        meta->philo[i].alive = &meta->stop;
+        meta->philo[i].ate_last = meta->start_time;
+        if (pthread_mutex_init(&meta->philo[i].l_fork, NULL) != 0)
             return(EXIT_FAILURE); // exiting here -> free the malloced philos
         if (pthread_mutex_init(&meta->philo[i].m_eat, NULL) != 0)
             return(EXIT_FAILURE); // exiting here -> free the malloced philos
         if (pthread_mutex_init(&meta->philo[i].m_dead, NULL) != 0)
             return(EXIT_FAILURE); // exiting here -> free the malloced philos
-        meta->philo[i].right_fork = &meta->philo[(i + 1) % philos_num].left_fork;
+        printf("right fork belongs to philo %d\n", (i + 1) % p_num);
+        meta->philo[i].r_fork = &meta->philo[(i + 1) % p_num].l_fork;
         i++;
     }
-    create_threads(meta, philos_num);
+    create_threads(meta, p_num);
+    printf("finished init philos\n");
     return (0);
 }
 
@@ -106,5 +108,6 @@ int    init_meta(t_meta *meta, char **argv)
         return (EXIT_FAILURE);
     if (pthread_mutex_init(&meta->m_full_philos, NULL) != 0)
         return (EXIT_FAILURE);
+    printf("finished init meta\n");
     return (0);
 }

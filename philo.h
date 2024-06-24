@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/19 11:28:50 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/24 10:35:03 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ typedef	struct s_philo
 	int				num;
 	int				meal_count;
 	long int		ate_last;
-	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	left_fork;
+	pthread_mutex_t	*r_fork;
+	pthread_mutex_t	l_fork;
 	pthread_mutex_t	m_eat;
 	pthread_mutex_t	m_dead;
 	struct s_meta	*meta; // includes time to die eat and sleep

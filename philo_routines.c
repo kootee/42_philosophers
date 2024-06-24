@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/19 11:31:08 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/24 10:35:03 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void	eat(t_philo *philo)
 		ft_usleep(philo->meta->t_die);
 		return ;
 	}
-	pthread_mutex_lock(&philo->left_fork);
+	pthread_mutex_lock(&philo->l_fork);
 	print_message(TAKES_FORK, philo);
-	pthread_mutex_lock(philo->right_fork);
+	pthread_mutex_lock(philo->r_fork);
 	print_message(TAKES_FORK, philo);
 	pthread_mutex_lock(&philo->m_eat);
 	philo->eating = true;
@@ -60,8 +60,8 @@ void	eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->m_eat);
 	print_message(EATING, philo);
 	ft_usleep(philo->meta->t_eat);
-	pthread_mutex_unlock(philo->right_fork);
-	pthread_mutex_unlock(&philo->left_fork);
+	pthread_mutex_unlock(philo->r_fork);
+	pthread_mutex_unlock(&philo->l_fork);
 	philo->eating = false;
 
 	printf("Philo %d has eaten %d times now\n", philo->num, philo->meal_count);
