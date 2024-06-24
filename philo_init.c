@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:16:28 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/24 12:03:12 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:09:07 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ static int create_threads(t_meta *meta, int num_of_philos)
             return (EXIT_FAILURE);
         i++;
     }
-    i = 0;
+/*     i = 0;
     while (i < num_of_philos)
     {
         if (pthread_join(meta->philo[i].thread, NULL) != 0)
             return (EXIT_FAILURE);
         i++;
-    }
+    } */
     return (0);
 }
 
@@ -63,7 +63,6 @@ int init_philos(t_meta *meta, int p_num)
     {
         meta->philo[i].num = i;
         meta->philo[i].meta = meta;
-        meta->philo[i].eating = false;
         meta->philo[i].meal_count = 0;
         meta->philo[i].r_fork = NULL;
         meta->philo[i].ate_last = meta->start_time;
@@ -87,7 +86,7 @@ int    init_meta(t_meta *meta, char **argv)
     meta->stop = false;
     meta->start_time = get_time();
     meta->full_philos = 0;
-    meta->times_to_eat = 0;
+    meta->times_to_eat = -1;
     meta->philos_num = ft_atoi(argv[1]);
     meta->t_die = ft_atoi(argv[2]);
     meta->t_eat = ft_atoi(argv[3]);
@@ -104,8 +103,6 @@ int    init_meta(t_meta *meta, char **argv)
     if (pthread_mutex_init(&meta->m_print, NULL) != 0)
         return (EXIT_FAILURE);
     if (pthread_mutex_init(&meta->m_stop, NULL) != 0)
-        return (EXIT_FAILURE);
-    if (pthread_mutex_init(&meta->m_full_philos, NULL) != 0)
         return (EXIT_FAILURE);
     printf("finished init meta\n");
     return (0);

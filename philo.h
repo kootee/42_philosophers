@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/24 12:08:43 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:09:13 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,10 @@ typedef enum s_errorcode
 
 typedef	struct s_philo
 {
-	pthread_t		thread;
-	bool			eating;
 	int				num;
 	int				meal_count;
 	long int		ate_last;
+	pthread_t		thread;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	l_fork;
 	pthread_mutex_t	m_eat;
@@ -65,7 +64,6 @@ typedef struct s_meta
 	int				full_philos;
 	pthread_mutex_t	m_print;
 	pthread_mutex_t	m_stop;
-	pthread_mutex_t	m_full_philos;
 //	pthread_t		monitor;
 	t_philo			*philo;
 }	t_meta;
