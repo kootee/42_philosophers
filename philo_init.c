@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:16:28 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/24 14:09:07 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:21:01 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ int init_philos(t_meta *meta, int p_num)
             return(EXIT_FAILURE); // exiting here -> free the malloced philos
         if (pthread_mutex_init(&meta->philo[i].m_eat, NULL) != 0)
             return(EXIT_FAILURE); // exiting here -> free the malloced philos
-        if (pthread_mutex_init(&meta->philo[i].m_dead, NULL) != 0)
-            return(EXIT_FAILURE); // exiting here -> free the malloced philos
+        /* if (pthread_mutex_init(&meta->philo[i].m_dead, NULL) != 0)
+            return(EXIT_FAILURE); */ // exiting here -> free the malloced philos
         printf("right fork belongs to philo %d\n", (i + 1) % p_num);
         meta->philo[i].r_fork = &meta->philo[(i + 1) % p_num].l_fork;
         i++;
@@ -103,6 +103,8 @@ int    init_meta(t_meta *meta, char **argv)
     if (pthread_mutex_init(&meta->m_print, NULL) != 0)
         return (EXIT_FAILURE);
     if (pthread_mutex_init(&meta->m_stop, NULL) != 0)
+        return (EXIT_FAILURE);
+    if (pthread_mutex_init(&meta->m_full_count, NULL) != 0)
         return (EXIT_FAILURE);
     printf("finished init meta\n");
     return (0);
