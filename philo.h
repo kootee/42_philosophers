@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/24 16:58:47 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/26 08:26:32 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int			is_alive(t_philo *philo);
 
 
 /* Utils */
-long int	get_time(void);
+unsigned int	get_time(void);
 int			ft_atoi(const char *str);
 int			ft_usleep(unsigned int time);
 void		print_message(const char *message, t_philo *philo);

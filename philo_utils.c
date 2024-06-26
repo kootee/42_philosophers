@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:16:17 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/24 11:49:40 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/26 08:26:19 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	ft_atoi(const char *str)
 	return (nbr * i);
 }
 
-long int  get_time(void)
+unsigned int  get_time(void)
 {
     struct timeval   time;
     
