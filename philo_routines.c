@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/26 14:08:19 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:17:45 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ void	*monitor_life(void *ptr)
 		if ((get_time() - philo->ate_last >= (long int)philo->meta->t_die))
 		{
 			philo->meta->stop = true;
-			print_message(DIED, philo);
+			pthread_mutex_unlock(&philo->m_eat);
+			pthread_mutex_unlock(&philo->meta->m_stop);
+			print_message(DIED, philo, 1);
 			break ;
 		}
 		pthread_mutex_unlock(&philo->m_eat);
@@ -44,7 +46,7 @@ void	*monitor_life(void *ptr)
 static int	eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->l_fork);
-	print_message(TAKES_FORK, philo);
+	print_message(TAKES_FORK, philo, 0);
 	if (philo->meta->philos_num == 1)
 	{
 		ft_usleep(philo->meta->t_die);
@@ -57,8 +59,8 @@ static int	eat(t_philo *philo)
 		pthread_mutex_unlock(philo->r_fork);
 		return (1);
 	}
-	print_message(TAKES_FORK, philo);
-	print_message(EATING, philo);
+	print_message(TAKES_FORK, philo, 0);
+	print_message(EATING, philo, 0);
 	pthread_mutex_lock(&philo->m_eat);
 	philo->ate_last = get_time();
 	philo->meal_count++;
@@ -73,9 +75,9 @@ static int	eat(t_philo *philo)
 
 static void	philo_sleep_think(t_philo *philo)
 {
-	print_message(SLEEPING, philo);
+	print_message(SLEEPING, philo, 0);
 	ft_usleep(philo->meta->t_sleep);
-	print_message(THINKING, philo);
+	print_message(THINKING, philo, 0);
 }
 
 static void check_all_full(t_meta *meta)

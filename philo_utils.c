@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:16:17 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/26 08:26:19 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:18:08 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int	is_alive(t_philo *philo)
     return (1);
 }
 
-void	print_message(const char *message, t_philo *philo)
+void	print_message(const char *message, t_philo *philo, int dead)
 {
     size_t current_time;
 
-    /* if (!is_alive(philo))
-        return ; */
+    if (!is_alive(philo) && dead != 1)
+        return ;
     current_time = get_time() - philo->meta->start_time;
     pthread_mutex_lock(&philo->meta->m_print);
     printf("%zu %d %s\n", current_time, philo->num, message);
