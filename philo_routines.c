@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/24 15:45:24 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:08:19 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,22 @@ void	*monitor_life(void *ptr)
 	return (NULL);
 }
 
-void	eat(t_philo *philo)
+static int	eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->l_fork);
 	print_message(TAKES_FORK, philo);
 	if (philo->meta->philos_num == 1)
 	{
 		ft_usleep(philo->meta->t_die);
-		return ;
+		return (1);
 	}
 	pthread_mutex_lock(philo->r_fork);
+	if (is_alive(philo) == 0)
+	{
+		pthread_mutex_unlock(&philo->l_fork);
+		pthread_mutex_unlock(philo->r_fork);
+		return (1);
+	}
 	print_message(TAKES_FORK, philo);
 	print_message(EATING, philo);
 	pthread_mutex_lock(&philo->m_eat);
@@ -62,6 +68,7 @@ void	eat(t_philo *philo)
 	pthread_mutex_unlock(philo->r_fork);
 	pthread_mutex_unlock(&philo->l_fork);
 	printf("Philo %d has put the forks down\n", philo->num);
+	return (0);
 }
 
 static void	philo_sleep_think(t_philo *philo)
@@ -88,12 +95,13 @@ void    *philo_routine(void *ptr)
 	
 	philo = (t_philo *)ptr;
 	if (philo->meta->philos_num % 2 == 0)
-		ft_usleep(10);
+		ft_usleep(1);
 	if (pthread_create(&philo->monitor, NULL, &monitor_life, philo) != 0)
         handle_error(EXIT_FAILURE);
     while (is_alive(philo) && philo->meal_count != philo->meta->times_to_eat)
 	{
-		eat(philo);
+		if (eat(philo) != 0)
+			break ;
 		if (philo->meal_count == philo->meta->times_to_eat)
 		{
 			printf("\033[1m philo %d is full \033[0m\n", philo->num);
@@ -101,7 +109,7 @@ void    *philo_routine(void *ptr)
 			philo->meta->full_philos++;
 			check_all_full(philo->meta);
 			pthread_mutex_unlock(&philo->meta->m_full_count);
-			return (NULL);
+			break ;
 		}
 		philo_sleep_think(philo);
 	}
