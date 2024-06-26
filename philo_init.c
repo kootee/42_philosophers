@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ktoivola <ktoivola@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:16:28 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/24 15:21:01 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:33:45 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ int    valid_args(char **args)
     i = 1;
     while (args[i])
     {    
+        printf("checking %s\n", args[i]);
         j = 0;
         while (args[i][j])
         {
-            if (args[i][j] < '0' && args[i][j] > '9')
+            if ((args[i][j] < '0' && args[i][j] > '9') || args[i][j] == '-')
                 return (EXIT_FAILURE);
             j++;
         }
@@ -72,12 +73,12 @@ int init_philos(t_meta *meta, int p_num)
             return(EXIT_FAILURE); // exiting here -> free the malloced philos
         /* if (pthread_mutex_init(&meta->philo[i].m_dead, NULL) != 0)
             return(EXIT_FAILURE); */ // exiting here -> free the malloced philos
-        printf("right fork belongs to philo %d\n", (i + 1) % p_num);
+        // printf("right fork belongs to philo %d\n", (i + 1) % p_num);
         meta->philo[i].r_fork = &meta->philo[(i + 1) % p_num].l_fork;
         i++;
     }
     create_threads(meta, p_num);
-    printf("finished init philos\n");
+    // printf("finished init philos\n");
     return (0);
 }
 
@@ -106,6 +107,6 @@ int    init_meta(t_meta *meta, char **argv)
         return (EXIT_FAILURE);
     if (pthread_mutex_init(&meta->m_full_count, NULL) != 0)
         return (EXIT_FAILURE);
-    printf("finished init meta\n");
+    // printf("finished init meta\n");
     return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_routines.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ktoivola <ktoivola@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/26 14:17:45 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/26 15:02:09 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,12 @@ void    *philo_routine(void *ptr)
 	t_philo		*philo;
 	
 	philo = (t_philo *)ptr;
-	if (philo->meta->philos_num % 2 == 0)
+	printf("Starting philo thread\n");
+	if (philo->num % 2 == 0)
+	{
+		printf("was uneven - sleeping 1 ms\n");
 		ft_usleep(1);
+	}
 	if (pthread_create(&philo->monitor, NULL, &monitor_life, philo) != 0)
         handle_error(EXIT_FAILURE);
     while (is_alive(philo) && philo->meal_count != philo->meta->times_to_eat)
