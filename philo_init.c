@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:16:28 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/26 14:33:45 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/26 17:07:13 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int    valid_args(char **args)
     i = 1;
     while (args[i])
     {    
-        printf("checking %s\n", args[i]);
         j = 0;
         while (args[i][j])
         {

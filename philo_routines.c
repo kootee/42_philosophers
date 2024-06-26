@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/26 16:39:24 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/26 16:48:36 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,24 +45,26 @@ void	*monitor_life(void *ptr)
 
 static int	eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->l_fork); // incorrect lock order
-	print_message(TAKES_FORK, philo, 0);
 	if (philo->meta->philos_num == 1)
 	{
 		ft_usleep(philo->meta->t_die);
 		// pthread_mutex_unlock(&philo->l_fork);
 		return (1);
 	}
+	
+	pthread_mutex_lock(&philo->l_fork); // incorrect lock order
+	print_message(TAKES_FORK, philo, 0);
+	
 	pthread_mutex_lock(philo->r_fork); // followed by aqusition by lock here...
 	if (is_alive(philo) == 0)
 	{
-		pthread_mutex_unlock(&philo->l_fork);
-		pthread_mutex_unlock(philo->r_fork);
+		// pthread_mutex_unlock(philo->r_fork);
+		// pthread_mutex_unlock(&philo->l_fork);
 		return (1);
 	}
 	print_message(TAKES_FORK, philo, 0);
-	print_message(EATING, philo, 0);
 	pthread_mutex_lock(&philo->m_eat);
+	print_message(EATING, philo, 0);
 	philo->ate_last = get_time();
 	philo->meal_count++;
 	ft_usleep(philo->meta->t_eat);
