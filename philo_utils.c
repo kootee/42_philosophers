@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ktoivola <ktoivola@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:16:17 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/26 14:18:08 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/26 16:17:02 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 int	is_alive(t_philo *philo)
 {
+	int	alive;
+	
 	pthread_mutex_lock(&philo->meta->m_stop);
 	if (philo->meta->stop == true)
-	{
-		pthread_mutex_unlock(&philo->meta->m_stop);
-		return (0);
-	}
+		alive = 0;
+	else
+		alive = 1;
 	pthread_mutex_unlock(&philo->meta->m_stop);
-    return (1);
+    return (alive);
 }
 
 void	print_message(const char *message, t_philo *philo, int dead)
