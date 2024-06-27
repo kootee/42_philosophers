@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/27 14:54:58 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:16:10 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	*philo_routine(void *ptr)
 		ft_usleep(1);
 	if (pthread_create(&philo->monitor, NULL, &monitor_life, philo) != 0)
 		return (NULL);
-	while (is_alive(philo) && philo->meal_count != philo->meta->times_to_eat)
+	while (is_alive(philo))
 	{
 		if (eat(philo) != 0)
 			break ;

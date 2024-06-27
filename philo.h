@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/27 14:54:38 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:00:08 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ typedef struct s_meta
 	int				t_sleep;
 	int				full_philos;
 	unsigned int	start_time;
-	pthread_mutex_t	m_print;
 	pthread_mutex_t	m_stop;
+	pthread_mutex_t	m_print;
 	pthread_mutex_t	m_full_count;
 	t_philo			*philo;
 }	t_meta;
