@@ -1,9 +1,9 @@
 NAME := philo
-CC := gcc
+CC := cc
 BUILD_DIR := build
 BIN_DIR := bin
-CFLAGS ?= -Wextra -Wall -Werror -Wunreachable-code -Ofast -pthread -g
-DEBUG_FLAGS ?= -fsanitize=thread
+CFLAGS := -Wextra -Wall -Werror -O3 -pthread
+DEBUG_FLAGS ?= -g
 debug ?= 0
 
 HEADERS	= -I ./include

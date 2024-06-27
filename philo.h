@@ -6,19 +6,18 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/27 13:34:42 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/27 14:54:38 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-#include <stdio.h>       // For printf
-#include <stdlib.h>      // For malloc, free
-#include <unistd.h>      // For write, usleep
-#include <stdbool.h>	// For bool vals
-#include <pthread.h>     // For pthread functions
-#include <sys/time.h>    // For gettimeofday
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <pthread.h>
+# include <sys/time.h>
 
 # define TAKES_FORK	"has taken a fork"
 # define EATING		"is eating"
@@ -36,29 +35,29 @@ typedef enum s_errorcode
 	EXIT_MALLOC_FAIL = 205
 }	t_errorcode;
 
-typedef	struct s_philo
+typedef struct s_philo
 {
 	int				num;
 	int				meal_count;
-	long int		ate_last;
+	unsigned int	ate_last;
 	pthread_t		thread;
 	pthread_t		monitor;
 	pthread_mutex_t	l_fork;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	m_eat;
 	struct s_meta	*meta;
-	}	t_philo;
+}	t_philo;
 
 typedef struct s_meta
 {
-	bool			stop;
-	long int		start_time;
+	int				stop;
 	int				philos_num;
 	int				times_to_eat;
 	int				t_die;
 	int				t_eat;
 	int				t_sleep;
 	int				full_philos;
+	unsigned int	start_time;
 	pthread_mutex_t	m_print;
 	pthread_mutex_t	m_stop;
 	pthread_mutex_t	m_full_count;
@@ -66,23 +65,23 @@ typedef struct s_meta
 }	t_meta;
 
 /* Init functions */
-int			init_meta(t_meta *meta, char **argv);
-int			init_philos(t_meta *meta, int num_of_philos);
-int			valid_args(char **args, t_meta *meta);
+int				init_meta(t_meta *meta, char **argv);
+int				init_philos(t_meta *meta, int num_of_philos);
+int				valid_args(char **args, t_meta *meta);
 
-/* Philo routines */
-int			is_alive(t_philo *philo);
-void		*philo_routine(void *ptr);
-void		*monitor_life(void *ptr);
+/* Threads */
+void			*philo_routine(void *ptr);
+void			*monitor_life(void *ptr);
 
 /* Utils */
 unsigned int	get_time(void);
+int				is_alive(t_philo *philo);
 int				ft_atoi(const char *str);
-int				ft_usleep(unsigned int time);
+void			ft_usleep(unsigned int time);
 void			print_message(const char *message, t_philo *philo, int dead);
 
 /* Error handling & terminate */
-int			terminate(t_meta *meta);
-int		handle_error(int errno, t_meta *meta);
+int				terminate(t_meta *meta);
+int				handle_error(int errno, t_meta *meta);
 
 #endif

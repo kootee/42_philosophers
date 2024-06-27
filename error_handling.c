@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:51:47 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/27 13:48:09 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/27 14:01:38 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,6 @@ int	handle_error(int errno, t_meta *meta)
 	{
 		(void)!write(2, "Error with threads\n", 20);
 		terminate(meta);
-	}
-	else
-	{
-		if (meta->philo != NULL)
-			free(meta->philo);
-		(void)!write(2, "Philosophers: error\n", 21);
 	}
 	return (errno);
 }
