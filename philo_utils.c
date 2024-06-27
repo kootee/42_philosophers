@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ktoivola <ktoivola@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:16:17 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/26 16:17:02 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:08:50 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ unsigned int  get_time(void)
 {
     struct timeval   time;
     
-    if (gettimeofday(&time, NULL) < 0)
-        handle_error(EXIT_FAILURE);
+    if (gettimeofday(&time, NULL) != 0)
+	{
+		(void)!write(2, "Get time of day error", 22);
+        return (1);
+	}
     return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }

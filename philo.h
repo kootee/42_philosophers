@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:00:40 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/26 14:18:18 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:34:42 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,10 @@
 
 #include <stdio.h>       // For printf
 #include <stdlib.h>      // For malloc, free
-#include <string.h>      // For memset
 #include <unistd.h>      // For write, usleep
-#include <sys/time.h>    // For gettimeofday
-#include <pthread.h>     // For pthread functions
-#include <sys/time.h>	// For time functions
 #include <stdbool.h>	// For bool vals
+#include <pthread.h>     // For pthread functions
+#include <sys/time.h>    // For gettimeofday
 
 # define TAKES_FORK	"has taken a fork"
 # define EATING		"is eating"
@@ -33,10 +31,9 @@ typedef enum s_errorcode
 	EXIT_CMD_COUNT_ERROR = 200,
 	EXIT_INIT_ERROR = 201,
 	EXIT_INVALID_ARGS = 202,
-	EXIT_INVALID_MAP_DIM = 203,
-	EXIT_OPEN_ERROR = 204,
-	EXIT_INVALID_FILE_NAME = 205,
-	EXIT_MALLOC_FAIL = 206
+	EXIT_MUTEX_INIT_ERROR = 203,
+	EXIT_THREADS_ERROR = 204,
+	EXIT_MALLOC_FAIL = 205
 }	t_errorcode;
 
 typedef	struct s_philo
@@ -49,8 +46,8 @@ typedef	struct s_philo
 	pthread_mutex_t	l_fork;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	m_eat;
-	struct s_meta	*meta; // includes time to die eat and sleep
-}	t_philo;
+	struct s_meta	*meta;
+	}	t_philo;
 
 typedef struct s_meta
 {
@@ -71,21 +68,21 @@ typedef struct s_meta
 /* Init functions */
 int			init_meta(t_meta *meta, char **argv);
 int			init_philos(t_meta *meta, int num_of_philos);
-int			valid_args(char **args);
+int			valid_args(char **args, t_meta *meta);
 
 /* Philo routines */
+int			is_alive(t_philo *philo);
 void		*philo_routine(void *ptr);
 void		*monitor_life(void *ptr);
-int			is_alive(t_philo *philo);
-
 
 /* Utils */
 unsigned int	get_time(void);
-int			ft_atoi(const char *str);
-int			ft_usleep(unsigned int time);
-void		print_message(const char *message, t_philo *philo, int dead);
+int				ft_atoi(const char *str);
+int				ft_usleep(unsigned int time);
+void			print_message(const char *message, t_philo *philo, int dead);
 
-/* Error handling */
-void		handle_error(int errno);
+/* Error handling & terminate */
+int			terminate(t_meta *meta);
+int		handle_error(int errno, t_meta *meta);
 
 #endif
