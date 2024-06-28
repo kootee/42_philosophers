@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ktoivola <ktoivola@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:16:17 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/26 16:17:02 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/27 14:56:20 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,36 +15,35 @@
 int	is_alive(t_philo *philo)
 {
 	int	alive;
-	
+
 	pthread_mutex_lock(&philo->meta->m_stop);
-	if (philo->meta->stop == true)
+	if (philo->meta->stop == 1)
 		alive = 0;
 	else
 		alive = 1;
 	pthread_mutex_unlock(&philo->meta->m_stop);
-    return (alive);
+	return (alive);
 }
 
 void	print_message(const char *message, t_philo *philo, int dead)
 {
-    size_t current_time;
+	unsigned int	current_time;
 
-    if (!is_alive(philo) && dead != 1)
-        return ;
-    current_time = get_time() - philo->meta->start_time;
-    pthread_mutex_lock(&philo->meta->m_print);
-    printf("%zu %d %s\n", current_time, philo->num, message);
-    pthread_mutex_unlock(&philo->meta->m_print);
+	if (!is_alive(philo) && dead != 1)
+		return ;
+	current_time = get_time() - philo->meta->start_time;
+	pthread_mutex_lock(&philo->meta->m_print);
+	printf("%u %d %s\n", current_time, philo->num, message);
+	pthread_mutex_unlock(&philo->meta->m_print);
 }
 
-int	ft_usleep(unsigned int time)
+void	ft_usleep(unsigned int time)
 {
 	unsigned int	start;
-	
+
 	start = get_time();
 	while (get_time() - start < time)
 		usleep(500);
-	return (0);
 }
 
 int	ft_atoi(const char *str)
@@ -71,11 +70,14 @@ int	ft_atoi(const char *str)
 	return (nbr * i);
 }
 
-unsigned int  get_time(void)
+unsigned int	get_time(void)
 {
-    struct timeval   time;
-    
-    if (gettimeofday(&time, NULL) < 0)
-        handle_error(EXIT_FAILURE);
-    return (time.tv_sec * 1000 + time.tv_usec / 1000);
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) != 0)
+	{
+		(void)!write(2, "Get time of day error", 22);
+		return (1);
+	}
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
