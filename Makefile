@@ -1,9 +1,7 @@
 NAME := philo
 CC := cc
-BUILD_DIR := build
-BIN_DIR := bin
-CFLAGS := -Wextra -Wall -Werror -O3 -pthread
-DEBUG_FLAGS ?= -g
+CFLAGS := -Wextra -Wall -Werror -pthread -O3
+DEBUG_FLAGS ?= -g -fsanitize=thread
 debug ?= 0
 
 HEADERS	= -I ./include
@@ -25,7 +23,7 @@ endif
 all: ${NAME}
 
 %.o: %.c
-	@${CC} ${CFLAGS} -o $@ -c $< ${HEADERS}
+	${CC} ${CFLAGS} -o $@ -c $< ${HEADERS}
 
 ${NAME}: ${OBJS}
 	${CC} ${CFLAGS} ${OBJS} ${HEADERS} -o ${NAME}

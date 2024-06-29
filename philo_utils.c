@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:16:17 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/27 14:56:20 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/06/29 11:11:20 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_message(const char *message, t_philo *philo, int dead)
 		return ;
 	current_time = get_time() - philo->meta->start_time;
 	pthread_mutex_lock(&philo->meta->m_print);
-	printf("%u %d %s\n", current_time, philo->num, message);
+	printf("%u	%d %s\n", current_time, philo->num + 1, message);
 	pthread_mutex_unlock(&philo->meta->m_print);
 }
 
