@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/29 11:26:14 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/07/09 11:41:04 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,31 @@ void	*monitor_life(void *ptr)
 	while (1)
 	{
 		ft_usleep(philo->meta->t_die + 1);
-		pthread_mutex_lock(&philo->m_eat);
-		pthread_mutex_lock(&philo->meta->m_stop);
+		monitor_lock(philo, 1);
+		// pthread_mutex_lock(&philo->m_eat);
+		// pthread_mutex_lock(&philo->meta->m_stop);
 		if (philo->meta->stop == 1)
+		{
+			monitor_lock(philo, 0);
+			// pthread_mutex_unlock(&philo->m_eat);
+			// pthread_mutex_unlock(&philo->meta->m_stop);
 			break ;
+		}
 		if ((get_time() - philo->ate_last >= (long int)philo->meta->t_die))
 		{
 			philo->meta->stop = 1;
-			pthread_mutex_unlock(&philo->m_eat);
-			pthread_mutex_unlock(&philo->meta->m_stop);
+			monitor_lock(philo, 0);
+			// pthread_mutex_unlock(&philo->m_eat);
+			// pthread_mutex_unlock(&philo->meta->m_stop);
 			print_message(DIED, philo, 1);
 			break ;
 		}
-		pthread_mutex_unlock(&philo->m_eat);
-		pthread_mutex_unlock(&philo->meta->m_stop);
+		monitor_lock(philo, 0);
+		// pthread_mutex_unlock(&philo->m_eat);
+		// pthread_mutex_unlock(&philo->meta->m_stop);
 	}
-	pthread_mutex_unlock(&philo->m_eat);
-	pthread_mutex_unlock(&philo->meta->m_stop);
+	// pthread_mutex_unlock(&philo->m_eat);
+	// pthread_mutex_unlock(&philo->meta->m_stop);
 	return (NULL);
 }
 
@@ -44,12 +52,6 @@ static int	eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->r_fork);
 	print_message(TAKES_FORK, philo, 0);
-	if (philo->meta->philos_num == 1)
-	{
-		ft_usleep(philo->meta->t_die);
-		pthread_mutex_unlock(philo->r_fork);
-		return (1);
-	}
 	pthread_mutex_lock(&philo->l_fork);
 	if (is_alive(philo) == 0)
 	{
@@ -76,28 +78,20 @@ static void	philo_sleep_think(t_philo *philo)
 	print_message(THINKING, philo, 0);
 }
 
-static void	check_all_full(t_meta *meta)
-{
-	pthread_mutex_lock(&meta->m_full_count);
-	meta->full_philos++;
-	if (meta->full_philos == meta->philos_num)
-	{
-		pthread_mutex_lock(&meta->m_stop);
-		meta->stop = 1;
-		pthread_mutex_unlock(&meta->m_stop);
-	}
-	pthread_mutex_unlock(&meta->m_full_count);
-}
-
 void	*philo_routine(void *ptr)
 {
 	t_philo		*philo;
 
 	philo = (t_philo *)ptr;
-	if (philo->num % 2 == 0)
-		ft_usleep(philo->meta->t_sleep - 10);
 	if (pthread_create(&philo->monitor, NULL, &monitor_life, philo) != 0)
 		return (NULL);
+	if (philo->meta->philos_num == 1)
+	{
+		lonely_philo(philo);
+		return (NULL) ;
+	}
+	if (philo->num % 2 == 0)
+		ft_usleep(philo->meta->t_sleep - 10);
 	while (is_alive(philo))
 	{
 		if (eat(philo) != 0)

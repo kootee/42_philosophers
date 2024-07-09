@@ -10,7 +10,8 @@ SRCS	= 	main.c \
 			error_handling.c \
 			philo_init.c \
 			philo_routines.c \
-			philo_utils.c 
+			philo_utils.c \
+			philo_routine_utils.c
 
 OBJS	= ${SRCS:.c=.o}
 
@@ -29,12 +30,12 @@ ${NAME}: ${OBJS}
 	${CC} ${CFLAGS} ${OBJS} ${HEADERS} -o ${NAME}
 
 clean:
-	@rm -rf ${OBJS}
 	@echo "cleaning"
+	rm -rf ${OBJS}
 
 fclean: clean
-	@rm -rf ${NAME}
 	@echo "fcleaning"
+	rm -rf ${NAME}
 
 re: clean all
 

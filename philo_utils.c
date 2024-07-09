@@ -6,24 +6,11 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:16:17 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/29 11:11:20 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/07/09 11:18:29 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	is_alive(t_philo *philo)
-{
-	int	alive;
-
-	pthread_mutex_lock(&philo->meta->m_stop);
-	if (philo->meta->stop == 1)
-		alive = 0;
-	else
-		alive = 1;
-	pthread_mutex_unlock(&philo->meta->m_stop);
-	return (alive);
-}
 
 void	print_message(const char *message, t_philo *philo, int dead)
 {
