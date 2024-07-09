@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/07/09 11:41:04 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/07/09 11:46:58 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,30 +21,20 @@ void	*monitor_life(void *ptr)
 	{
 		ft_usleep(philo->meta->t_die + 1);
 		monitor_lock(philo, 1);
-		// pthread_mutex_lock(&philo->m_eat);
-		// pthread_mutex_lock(&philo->meta->m_stop);
 		if (philo->meta->stop == 1)
 		{
 			monitor_lock(philo, 0);
-			// pthread_mutex_unlock(&philo->m_eat);
-			// pthread_mutex_unlock(&philo->meta->m_stop);
 			break ;
 		}
 		if ((get_time() - philo->ate_last >= (long int)philo->meta->t_die))
 		{
 			philo->meta->stop = 1;
 			monitor_lock(philo, 0);
-			// pthread_mutex_unlock(&philo->m_eat);
-			// pthread_mutex_unlock(&philo->meta->m_stop);
 			print_message(DIED, philo, 1);
 			break ;
 		}
 		monitor_lock(philo, 0);
-		// pthread_mutex_unlock(&philo->m_eat);
-		// pthread_mutex_unlock(&philo->meta->m_stop);
 	}
-	// pthread_mutex_unlock(&philo->m_eat);
-	// pthread_mutex_unlock(&philo->meta->m_stop);
 	return (NULL);
 }
 
@@ -88,7 +78,7 @@ void	*philo_routine(void *ptr)
 	if (philo->meta->philos_num == 1)
 	{
 		lonely_philo(philo);
-		return (NULL) ;
+		return (NULL);
 	}
 	if (philo->num % 2 == 0)
 		ft_usleep(philo->meta->t_sleep - 10);

@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:15:11 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/07/09 11:38:32 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/07/09 11:47:37 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ void	monitor_lock(t_philo *philo, int lock)
 		pthread_mutex_unlock(&philo->meta->m_stop);
 	}
 }
-void lonely_philo(t_philo *philo)
+
+void	lonely_philo(t_philo *philo)
 {
-    pthread_mutex_lock(&philo->l_fork);
+	pthread_mutex_lock(&philo->l_fork);
 	print_message(TAKES_FORK, philo, 0);
 	ft_usleep(philo->meta->t_die);
 	pthread_mutex_unlock(&philo->l_fork);
