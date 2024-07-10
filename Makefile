@@ -1,7 +1,7 @@
 NAME := philo
 CC := cc
 CFLAGS := -Wextra -Wall -Werror -pthread -O3
-DEBUG_FLAGS ?= -g -fsanitize=thread
+DEBUG_FLAGS ?= -g 
 debug ?= 0
 
 HEADERS	= -I ./include
