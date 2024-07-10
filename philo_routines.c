@@ -6,7 +6,7 @@
 /*   By: ktoivola <ktoivola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 21:12:50 by ktoivola          #+#    #+#             */
-/*   Updated: 2024/06/29 11:26:14 by ktoivola         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:25:41 by ktoivola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	*philo_routine(void *ptr)
 
 	philo = (t_philo *)ptr;
 	if (philo->num % 2 == 0)
-		ft_usleep(philo->meta->t_sleep - 10);
+		ft_usleep(philo->meta->t_eat - 10);
 	if (pthread_create(&philo->monitor, NULL, &monitor_life, philo) != 0)
 		return (NULL);
 	while (is_alive(philo))
